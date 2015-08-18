@@ -6,7 +6,8 @@ int plot_omg_11GeV_gausII(){
     if(particle == "omg"){
 //	infile = new TFile("omg_21M_BBC_BBCMONTOF.local.root", "read");
 	//infile = new TFile("0628_2015_omg.local_analysis.root", "read");
-	infile = new TFile("0813_11GeV_omg.local_analysis.root", "read");
+	//infile = new TFile("0813_11GeV_omg.local_analysis.root", "read");
+	infile = new TFile("0817_11GeV_omg.local_analysis.root", "read");
     }
     else if(particle == "antiomg"){
 	infile = new TFile("antiomg_21M_BBC_BBCMONTOF.local.root", "read");
