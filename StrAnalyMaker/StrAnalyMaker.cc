@@ -28,9 +28,10 @@ StrAnalyMaker::StrAnalyMaker():pdgmass_xi(1.67245){
     std::cout << "StrAnalyMaker Constructor v0.01 2015-08-24 " << std::endl;
 }
 
-//StrAnalyMaker::~StrAnalyMaker(){}
+StrAnalyMaker::~StrAnalyMaker(){}
 
 void StrAnalyMaker::Init(std::string overview_file_name){
+    std::cout << "Initialization" << std::endl;
     // Initialize events number for each centrality 
     TFile* infile_overview = new TFile(overview_file_name.c_str(), "read"); 
     TH1F* h_centbin9_after0 = (TH1F*)infile_overview->Get("h_centbin9_after0");
@@ -46,9 +47,12 @@ void StrAnalyMaker::Init(std::string overview_file_name){
     // Initialize signal counting range
     mSigRangeLeft = 1.66;
     mSigRangeRight = 1.685;
+
+    rotBgAnalysisInit();
 }
 
 void StrAnalyMaker::rotBgAnalysisInit(){
+    std::cout << "Analyze Rotational Background Initialization" << std::endl;
     mRotNormLeftLowB = pdgmass_xi - 0.05;
     mRotNormLeftHighB = pdgmass_xi - 0.01;
 
@@ -57,6 +61,7 @@ void StrAnalyMaker::rotBgAnalysisInit(){
 }
 
 Double_t StrAnalyMaker::compRotNormFactor(Int_t centbin, Int_t ptbin,  TH1F* hdat, TH1F* hrot){
+    std::cout << "Compute Rot Norm Factor!" << std::endl;
     Int_t ratio_l1 = hrot->FindBin(mRotNormLeftLowB);
     Int_t ratio_l2 = hrot->FindBin(mRotNormLeftHighB);
     Int_t ratio_u1 = hrot->FindBin(mRotNormRightLowB);
@@ -68,6 +73,7 @@ Double_t StrAnalyMaker::compRotNormFactor(Int_t centbin, Int_t ptbin,  TH1F* hda
 
 void StrAnalyMaker::plotRotInvMassWithData(Int_t centbin, Int_t ptbin, TH1F* hdat, TH1F* hrot, Double_t scale){
     
+    std::cout << "Plot !" << std::endl;
     hdat->SetMarkerStyle(8);
     hdat->Draw("Hist");
     hdat->GetXaxis()->SetTitle("InvMass(GeV)");
