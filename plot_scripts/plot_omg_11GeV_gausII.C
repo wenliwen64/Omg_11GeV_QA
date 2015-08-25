@@ -6,8 +6,9 @@ int plot_omg_11GeV_gausII(){
     if(particle == "omg"){
 //	infile = new TFile("omg_21M_BBC_BBCMONTOF.local.root", "read");
 	//infile = new TFile("0628_2015_omg.local_analysis.root", "read");
-	//infile = new TFile("0813_11GeV_omg.local_analysis.root", "read");
-	infile = new TFile("0817_11GeV_omg.local_analysis.root", "read");
+	//infile = new TFile("0817_11GeV_omg.local_analysis.root", "read");
+	//infile = new TFile("0819_11GeV_omg.local_analysis.root", "read");
+	infile = new TFile("0818_11GeV_omg.local_analysis.test.root", "read");
     }
     else if(particle == "antiomg"){
 	infile = new TFile("antiomg_21M_BBC_BBCMONTOF.local.root", "read");
@@ -75,7 +76,7 @@ int plot_omg_11GeV_gausII(){
         TCanvas* c_1060 = new TCanvas("c_1060"); 
 
         c_010 -> cd();
-        //h_010 -> Rebin();
+        h_010 -> Rebin();
         h_010 -> SetMarkerStyle(8);
         h_010 -> Draw("PE");
         h_010 -> GetXaxis() -> SetTitle("inv_mass(GeV)");
@@ -142,7 +143,7 @@ int plot_omg_11GeV_gausII(){
         f_bg->SetParameter(3, fit_par_010[i][6]);
         f_bg->Draw("sames");
 
-        float bg_counts_010 = f_bg->Integral(int_l, int_u)/0.0028;
+        float bg_counts_010 = f_bg->Integral(int_l, int_u)/h_010->GetBinWidth(2);
         if(particle == "antiomg" && (i == 5 || i == 0)){
             bg_counts_010 = f_bg->Integral(int_l, int_u)/0.0028;
         }
@@ -171,6 +172,7 @@ int plot_omg_11GeV_gausII(){
 	    f1 -> SetParameter(2, 0.006);
 	}
 	h_1060 -> SetMarkerStyle(8);
+	h_1060 -> Rebin();
         h_1060 -> Draw("PE");
 	h_1060 -> GetXaxis() -> SetTitle("inv_mass(GeV)");
 	h_1060 -> GetYaxis() -> SetTitle("counts");
@@ -203,9 +205,9 @@ int plot_omg_11GeV_gausII(){
         line_u_1060 -> Draw("sames");
         f_bg -> Draw("sames");
 
-        bg_counts = f_bg -> Integral(int_l, int_u)/0.0028; 
+        bg_counts = f_bg -> Integral(int_l, int_u)/h_1060->GetBinWidth(2); 
         if(particle=="omg" && i==5){
-	    bg_counts = f_bg->Integral(int_l, int_u)/0.0028; 
+	    bg_counts = f_bg->Integral(int_l, int_u)/h_1060->GetBinWidth(2); 
         }
 	lb_bin = h_1060 -> FindBin(int_l);
         ub_bin = h_1060 -> FindBin(int_u);
