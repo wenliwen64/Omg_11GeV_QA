@@ -31,11 +31,12 @@ StrAnalyMaker::StrAnalyMaker():pdgmass_xi(1.67245){
 StrAnalyMaker::~StrAnalyMaker(){}
 
 void StrAnalyMaker::Init(std::string overview_file_name){
-    std::cout << "Initialization" << std::endl;
+    std::cout << "InitializationII" << std::endl;
     // Initialize events number for each centrality 
     TFile* infile_overview = new TFile(overview_file_name.c_str(), "read"); 
     TH1F* h_centbin9_after0 = (TH1F*)infile_overview->Get("h_centbin9_after0");
     TH1F* h_centbin9_after1 = (TH1F*)infile_overview->Get("h_centbin9_after1");
+    std::cout << "happy?" << std::endl;
     for(int i = 0; i < mKCentBin; i++){
 	mNEventsUnweighted[i] = h_centbin9_after0->GetBinContent(i+2); 
 	mNEventsWeighted[i] = h_centbin9_after1->GetBinContent(i+2); 
@@ -180,6 +181,7 @@ void StrAnalyMaker::plotRawSpectra(){ // TODO:
 void StrAnalyMaker::Analyze(std::string filename_dat, std::string filename_rot){
     TFile* infile_dat = new TFile(filename_dat.c_str(), "read");
     TFile* infile_rot = new TFile(filename_rot.c_str(), "read"); 
+    std::cout << "Load infile_dat/rot successfully!" << std::endl;
     for(int i = 0; i < mKPtBin; i++){
         char hist_name_rot_010[200]; 
         char hist_name_rot_1060[200];
