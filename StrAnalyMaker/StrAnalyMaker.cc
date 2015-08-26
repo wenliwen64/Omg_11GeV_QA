@@ -48,14 +48,14 @@ void StrAnalyMaker::Init(std::string overview_filename, std::string dat_filename
     TH1F* h_centbin9_unweighted = (TH1F*)mOverviewFile->Get("h_centbin9_after0");
     TH1F* h_centbin9_weighted = (TH1F*)mOverviewFile->Get("h_centbin9_after1");
      
-    mNEventsUnweighted[1] = h_centbin9_unweighted->GetBinContent(10) + h_centbin9_unweighted->GetBinContent(9);
-    mNEventsWeighted[1] = h_centbin9_weighted->GetBinContent(10) + h_centbin9_weighted->GetBinContent(9);
     mNEventsUnweighted[0] = h_centbin9_unweighted->GetBinContent(8) + h_centbin9_unweighted->GetBinContent(7) + h_centbin9_unweighted->GetBinContent(6) + h_centbin9_unweighted->GetBinContent(5) + h_centbin9_unweighted->GetBinContent(4);
     mNEventsWeighted[0] = h_centbin9_weighted->GetBinContent(8) + h_centbin9_weighted->GetBinContent(7) + h_centbin9_weighted->GetBinContent(6) + h_centbin9_weighted->GetBinContent(5) + h_centbin9_weighted->GetBinContent(4);
+    mNEventsUnweighted[1] = h_centbin9_unweighted->GetBinContent(10) + h_centbin9_unweighted->GetBinContent(9);
+    mNEventsWeighted[1] = h_centbin9_weighted->GetBinContent(10) + h_centbin9_weighted->GetBinContent(9);
 
     for(int i = 0; i < mKCentBin; i++){
-        std::cout << mNEventsUnweighted[i] << "nevents unweighted!" << std::endl;
-        std::cout << mNEventsWeighted[i] << "nevents weighted!" << std::endl;
+        std::cout << mNEventsUnweighted[i] << "cent" << i << " nevents unweighted!" << std::endl;
+        std::cout << mNEventsWeighted[i] << "cent" << i << " nevents weighted!" << std::endl;
     }
 
     // Initialize branching ratio
@@ -86,7 +86,8 @@ Double_t StrAnalyMaker::compRotNormFactor(Int_t centbin, Int_t ptbin,  TH1F* hda
     Int_t ratio_u1 = hrot->FindBin(mRotNormLeftHighB);
     Int_t ratio_u2 = hrot->FindBin(mRotNormRightHighB);
  
-    mRotScale_ratio[centbin][ptbin] = (hrot->Integral(ratio_l1, ratio_u1) + hrot->Integral(ratio_l2, ratio_u2)) / (hdat->Integral(ratio_l1, ratio_u1) + hdat->Integral(ratio_l2, ratio_u2));    
+    //mRotScale_ratio[centbin][ptbin] = (hrot->Integral(ratio_l1, ratio_u1) + hrot->Integral(ratio_l2, ratio_u2)) / (hdat->Integral(ratio_l1, ratio_u1) + hdat->Integral(ratio_l2, ratio_u2));    
+    mRotScale_ratio[centbin][ptbin] = 1.;
     std::cout << "------Norm Factor For cent" << centbin << "pt" << ptbin << "is " << mRotScale_ratio[centbin][ptbin] << std::endl;
     return mRotScale_ratio[centbin][ptbin];
 }
@@ -175,8 +176,8 @@ void StrAnalyMaker::plotRawSpectra(){ // TODO:
     GRawSpectra_1060->SetMarkerSize(2.0);
     GRawSpectra_1060->SetMarkerStyle(34);
     GRawSpectra_1060->SetMarkerColor(2);
-    GRawSpectra_1060->SetMaximum(10E-5);
-    GRawSpectra_1060->SetMinimum(10E-8);
+    GRawSpectra_1060->SetMaximum(10E-1);
+    GRawSpectra_1060->SetMinimum(10E-9);
     GRawSpectra_1060->GetXaxis()->SetLimits(0.50, 3.60);
     GRawSpectra_1060->SetTitle("#Omega^{-} Spectra, Au+Au 14.5GeV");
     GRawSpectra_1060->GetYaxis()->SetTitle("#frac{d^{2}N}{2#piNP_{T}dP_{T}dy}(GeV/c)^{-2}");
@@ -217,6 +218,11 @@ void StrAnalyMaker::Analyze(){
         TH1F* hrot_1060 = (TH1F*)mRotBgFile->Get(hist_name_rot_1060);
         TH1F* hdat_1060 = (TH1F*)mDatFile->Get(hist_name_dat_1060);
        
+	hrot_010->Rebin(2);
+        hdat_010->Rebin(2);
+        hrot_1060->Rebin(2);
+        hdat_1060->Rebin(2);
+
         hrot_010->Sumw2();
         hdat_010->Sumw2();
         hrot_1060->Sumw2();
@@ -225,14 +231,13 @@ void StrAnalyMaker::Analyze(){
         double rot_scale_1060 = compRotNormFactor(0, i, hdat_1060, hrot_1060);
         double rot_scale_010 = compRotNormFactor(1, i, hdat_010, hrot_010);
 
-        plotRotInvMassWithData(0, i, hdat_1060, hrot_1060, rot_scale_1060);
-        plotRotInvMassWithData(1, i, hdat_010, hrot_010, rot_scale_010);
+        plotRotInvMassWithData(0, i, hdat_1060, hrot_1060, 1.);
+        plotRotInvMassWithData(1, i, hdat_010, hrot_010, 1.);
        
-        compRawSigCounts(0, i, hdat_1060, hrot_1060, rot_scale_1060); 
-        compRawSigCounts(1, i, hdat_010, hrot_010, rot_scale_010); 
+        compRawSigCounts(0, i, hdat_1060, hrot_1060, 1.); 
+        compRawSigCounts(1, i, hdat_010, hrot_010, 1.); 
 
     }
-    compRawSpectra(); 
     compRawSpectra(); 
       
     plotRawSpectra();
