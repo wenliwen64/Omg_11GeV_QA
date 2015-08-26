@@ -1,8 +1,13 @@
 #ifndef StrAnalyMaker_H
 #define StrAnalyMaker_H
 #include "TH1F.h"
+#include "TFile.h"
+#include "TObject.h"
 #include <string>
-class StrAnalyMaker{
+class StrAnalyMaker: public TObject{
+    TFile* mOverviewFile;
+    TFile* mDatFile;
+    TFile* mRotBgFile;
     Double_t pdgmass_xi;
     Int_t mKCentBin;
     Int_t mKPtBin;
@@ -21,6 +26,7 @@ class StrAnalyMaker{
 
     Double_t mRawSigCounts[2][6];
     Double_t mXRawSpectra[6];
+    Double_t mXRawSpectraError[6];
     Double_t mYRawSpectra[2][6];
     Double_t mYRawSpectraError[2][6];
     Double_t mDptSpectra[6];
@@ -30,12 +36,12 @@ class StrAnalyMaker{
 public:
     StrAnalyMaker();
     ~StrAnalyMaker();
-    void Init(std::string file_name);
+    void Init(std::string file_name, std::string, std::string);
     void plotRotInvMassWithData(Int_t centbin, Int_t ptbin, TH1F* hdat, TH1F* hrot, Double_t scale); 
     void compRawSigCounts(Int_t centbin, Int_t ptbin, TH1F* hdat, TH1F* hrot, Double_t scale);
     void compRawSpectra();
     void plotRawSpectra();
-    void Analyze(std::string, std::string);
+    void Analyze();
 
     ClassDef(StrAnalyMaker, 1)
 };
