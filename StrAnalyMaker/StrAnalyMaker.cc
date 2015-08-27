@@ -160,8 +160,8 @@ void StrAnalyMaker::compRawSpectra(){
 
     for(int i = 0; i < mKCentBin; i++){
         for(int j = 0; j < mKPtBin; j++){
-            mYRawSpectra[i][j] = 1/(2*PI) * mRawSigCounts[i][j] / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i];
-            mYRawSpectraError[i][j] = 1/(2*PI) * sqrt(mRawSigCounts[i][j]) / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i];
+            mYRawSpectra[i][j] = 1/(2*PI) * mRawSigCounts[i][j] / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
+            mYRawSpectraError[i][j] = 1/(2*PI) * sqrt(mRawSigCounts[i][j]) / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
             std::cout << "mYRawSpectra for cent" << i << "pt" << j <<" is " << mYRawSpectra[i][j] << "mYRawSpectraError is " << mYRawSpectraError[i][j] << std::endl;
 	}
     }
@@ -173,7 +173,7 @@ void StrAnalyMaker::plotRawSpectra(){ // TODO:
     rawspectra_can->SetTicks(1, 1);
 
     TGraphErrors* GRawSpectra_1060 = new TGraphErrors(6, mXRawSpectra, mYRawSpectra[0], mXRawSpectraError, mYRawSpectraError[0]); 
-    GRawSpectra_1060->SetMarkerSize(2.0);
+    GRawSpectra_1060->SetMarkerSize(1.0);
     GRawSpectra_1060->SetMarkerStyle(34);
     GRawSpectra_1060->SetMarkerColor(2);
     GRawSpectra_1060->SetMaximum(10E-1);
@@ -187,12 +187,12 @@ void StrAnalyMaker::plotRawSpectra(){ // TODO:
 
 
     TGraphErrors* GRawSpectra_010 = new TGraphErrors(6, mXRawSpectra, mYRawSpectra[1], mXRawSpectraError, mYRawSpectraError[1]); 
-    GRawSpectra_010->SetMarkerSize(2.0);
+    GRawSpectra_010->SetMarkerSize(1.0);
     GRawSpectra_010->SetMarkerStyle(34);
     GRawSpectra_010->SetMarkerColor(1);
     GRawSpectra_010->Draw("P same");
 
-    TLegend* leg = new TLegend(0.25, 0.25, 0.45, 0.45);
+    TLegend* leg = new TLegend(0.65, 0.65, 0.85, 0.85);
     leg->SetBorderSize(0);
     leg->AddEntry(GRawSpectra_1060, "10-60%", "p");
     leg->AddEntry(GRawSpectra_010, "0-10%", "p");
