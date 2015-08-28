@@ -45,18 +45,18 @@ void StrAnalyMaker::Init(std::string overview_filename, std::string dat_filename
     mDatFile = new TFile(dat_filename.c_str(), "read");
     mRotBgFile = new TFile(rotbg_filename.c_str(), "read");
 
-    TH1F* h_centbin9_unweighted = (TH1F*)mOverviewFile->Get("h_centbin9_after0");
-    TH1F* h_centbin9_weighted = (TH1F*)mOverviewFile->Get("h_centbin9_after1");
-    //TH1F* h_centbin9_weighted = (TH1F*)mOverviewFile->Get("h_centbin9_after");
+    //TH1F* h_centbin9_unweighted = (TH1F*)mOverviewFile->Get("h_centbin9_after0");
+    //TH1F* h_centbin9_weighted = (TH1F*)mOverviewFile->Get("h_centbin9_after1");
+    TH1F* h_centbin9_unweighted = (TH1F*)mOverviewFile->Get("h_centbin9_after");
      
     mNEventsUnweighted[0] = h_centbin9_unweighted->GetBinContent(8) + h_centbin9_unweighted->GetBinContent(7) + h_centbin9_unweighted->GetBinContent(6) + h_centbin9_unweighted->GetBinContent(5) + h_centbin9_unweighted->GetBinContent(4);
-    mNEventsWeighted[0] = h_centbin9_weighted->GetBinContent(8) + h_centbin9_weighted->GetBinContent(7) + h_centbin9_weighted->GetBinContent(6) + h_centbin9_weighted->GetBinContent(5) + h_centbin9_weighted->GetBinContent(4);
+    //mNEventsWeighted[0] = h_centbin9_weighted->GetBinContent(8) + h_centbin9_weighted->GetBinContent(7) + h_centbin9_weighted->GetBinContent(6) + h_centbin9_weighted->GetBinContent(5) + h_centbin9_weighted->GetBinContent(4);
     mNEventsUnweighted[1] = h_centbin9_unweighted->GetBinContent(10) + h_centbin9_unweighted->GetBinContent(9);
-    mNEventsWeighted[1] = h_centbin9_weighted->GetBinContent(10) + h_centbin9_weighted->GetBinContent(9);
+    //mNEventsWeighted[1] = h_centbin9_weighted->GetBinContent(10) + h_centbin9_weighted->GetBinContent(9);
 
     for(int i = 0; i < mKCentBin; i++){
         std::cout << mNEventsUnweighted[i] << "cent" << i << " nevents unweighted!" << std::endl;
-        std::cout << mNEventsWeighted[i] << "cent" << i << " nevents weighted!" << std::endl;
+        //std::cout << mNEventsWeighted[i] << "cent" << i << " nevents weighted!" << std::endl;
     }
 
     // Initialize branching ratio
@@ -161,8 +161,10 @@ void StrAnalyMaker::compRawSpectra(){
 
     for(int i = 0; i < mKCentBin; i++){
         for(int j = 0; j < mKPtBin; j++){
-            mYRawSpectra[i][j] = 1/(2*PI) * mRawSigCounts[i][j] / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
-            mYRawSpectraError[i][j] = 1/(2*PI) * sqrt(mRawSigCounts[i][j]) / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
+            //mYRawSpectra[i][j] = 1/(2*PI) * mRawSigCounts[i][j] / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
+            mYRawSpectra[i][j] = 1/(2*PI) * mRawSigCounts[i][j] / mXRawSpectra[j] / mDptSpectra[j] / mNEventsUnweighted[i] / mBr;
+            //mYRawSpectraError[i][j] = 1/(2*PI) * sqrt(mRawSigCounts[i][j]) / mXRawSpectra[j] / mDptSpectra[j] / mNEventsWeighted[i] / mBr;
+            mYRawSpectraError[i][j] = 1/(2*PI) * sqrt(mRawSigCounts[i][j]) / mXRawSpectra[j] / mDptSpectra[j] / mNEventsUnweighted[i] / mBr;
             std::cout << "mYRawSpectra for cent" << i << "pt" << j <<" is " << mYRawSpectra[i][j] << "mYRawSpectraError is " << mYRawSpectraError[i][j] << std::endl;
 	}
     }
