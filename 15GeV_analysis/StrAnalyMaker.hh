@@ -25,7 +25,6 @@ class StrAnalyMaker: public TObject{
     Double_t mRotScale_ratio[2][6];
 
     Double_t mRawSigCounts[2][6];
-    Double_t mRawSigCountsError[2][6];
     Double_t mXRawSpectra[6];
     Double_t mXRawSpectraError[6];
     Double_t mYRawSpectra[2][6];
@@ -33,7 +32,6 @@ class StrAnalyMaker: public TObject{
     Double_t mDptSpectra[6];
 
     void rotBgAnalysisInit();
-    void plotComparison(); // compare 11GeV to Feng's result
     Double_t compRotNormFactor(Int_t centbin, Int_t ptbin, TH1F* hdat, TH1F* hrot);
 public:
     StrAnalyMaker();
