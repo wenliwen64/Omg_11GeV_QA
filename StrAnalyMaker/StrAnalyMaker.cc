@@ -230,12 +230,14 @@ void StrAnalyMaker::Analyze(){
 
         double rot_scale_1060 = compRotNormFactor(0, i, hdat_1060, hrot_1060);
         double rot_scale_010 = compRotNormFactor(1, i, hdat_010, hrot_010);
+        //rot_scale_1060 = 1.;
+        //rot_scale_010 = 1.;
 
-        plotRotInvMassWithData(0, i, hdat_1060, hrot_1060, 1.);
-        plotRotInvMassWithData(1, i, hdat_010, hrot_010, 1.);
+        plotRotInvMassWithData(0, i, hdat_1060, hrot_1060, rot_scale_1060);
+        plotRotInvMassWithData(1, i, hdat_010, hrot_010, rot_scale_010);
        
-        compRawSigCounts(0, i, hdat_1060, hrot_1060, 1.); 
-        compRawSigCounts(1, i, hdat_010, hrot_010, 1.); 
+        compRawSigCounts(0, i, hdat_1060, hrot_1060, rot_scale_1060); 
+        compRawSigCounts(1, i, hdat_010, hrot_010, rot_scale_010); 
 
     }
     compRawSpectra(); 
